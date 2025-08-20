@@ -32,9 +32,9 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                        <th class="py-3 px-6 text-left">Food       |</th>
+                        <th class="py-3 px-6 text-left w-64">Food</th>
                         <th class="py-3 px-6 text-center">kcal per 100g</th>
-                        <th class="py-3 px-6 text-center">Consumed (g)</th>
+                        <th class="py-3 px-6 text-center w-24">Consumed (g)</th>
                         <th class="py-3 px-6 text-right">Actions</th>
                     </tr>
                 </thead>
@@ -127,7 +127,7 @@
                 
                 // Create table cells for each input
                 const foodCell = document.createElement('td');
-                foodCell.classList.add('py-3', 'px-6', 'text-left', 'w-48');
+                foodCell.classList.add('py-3', 'px-6', 'text-left', 'w-64');
                 foodCell.innerHTML = `<input type="text" class="input-field w-full" placeholder="Food name" value="${foodValue}">`;
 
                 const kcalCell = document.createElement('td');
@@ -135,7 +135,7 @@
                 kcalCell.innerHTML = `<input type="number" class="input-field kcal-input w-full text-right" placeholder="0" value="${kcalValue}">`;
                 
                 const amountCell = document.createElement('td');
-                amountCell.classList.add('py-3', 'px-6', 'text-center');
+                amountCell.classList.add('py-3', 'px-6', 'text-center', 'w-24');
                 amountCell.innerHTML = `<input type="number" class="input-field amount-input w-full text-right" placeholder="0">`;
                 
                 const actionsCell = document.createElement('td');
