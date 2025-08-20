@@ -30,12 +30,15 @@
         </p>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+            <table class="w-full text-left border-collapse table-fixed">
                 <thead>
                     <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                        <th class="py-3 px-6 text-left w-64">Food Name</th>
-                        <th class="py-3 px-6 text-center">kcal per 100g</th>
-                        <th class="py-3 px-6 text-center w-24"> Eaten (g)</th>
+                        <!-- Updated to take up half the width -->
+                        <th class="py-3 px-6 text-left w-1/2">Food Name</th>
+                        <!-- Updated to take up a quarter of the width -->
+                        <th class="py-3 px-6 text-center w-1/4">kcal per 100g</th>
+                        <!-- Updated to take up a quarter of the width -->
+                        <th class="py-3 px-6 text-center w-1/4"> Eaten (g)</th>
                         <th class="py-3 px-6 text-right">Actions</th>
                     </tr>
                 </thead>
@@ -124,16 +127,19 @@
                 
                 // Create table cells for each input
                 const foodCell = document.createElement('td');
-                foodCell.classList.add('py-3', 'px-6', 'text-left', 'w-64');
+                // Updated to take up half the width
+                foodCell.classList.add('py-3', 'px-6', 'text-left', 'w-1/2');
                 // === CHANGED TO TEXTAREA FOR MULTILINE SUPPORT ===
                 foodCell.innerHTML = `<textarea class="input-field w-full" placeholder="Food name">${foodValue}</textarea>`;
 
                 const kcalCell = document.createElement('td');
-                kcalCell.classList.add('py-3', 'px-6', 'text-center');
+                // Updated to take up a quarter of the width
+                kcalCell.classList.add('py-3', 'px-6', 'text-center', 'w-1/4');
                 kcalCell.innerHTML = `<input type="number" class="input-field kcal-input w-full text-right" placeholder="0" value="${kcalValue}">`;
                 
                 const amountCell = document.createElement('td');
-                amountCell.classList.add('py-3', 'px-6', 'text-center', 'w-24');
+                // Updated to take up a quarter of the width
+                amountCell.classList.add('py-3', 'px-6', 'text-center', 'w-1/4');
                 amountCell.innerHTML = `<input type="number" class="input-field amount-input w-full text-right" placeholder="0">`;
                 
                 const actionsCell = document.createElement('td');
