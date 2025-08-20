@@ -39,7 +39,7 @@
                     </tr>
                 </thead>
                 <tbody id="entries-container" class="text-gray-600 text-sm font-light">
-                    <!-- Initial row will be added by JavaScript -->
+                    <!-- Initial rows will be added by JavaScript -->
                 </tbody>
             </table>
         </div>
@@ -76,6 +76,13 @@
             const calculateBtn = document.getElementById('calculate-btn');
             const totalDisplay = document.getElementById('total-display');
 
+            // Array of default food items with their calorie values
+            const defaultItems = [
+                { food: 'Bread', kcal: 350 },
+                { food: 'Cheese', kcal: 150 },
+                { food: 'Noodles', kcal: 330 }
+            ];
+
             /**
              * Calculates the total sum based on the 'kcal' and 'amount' inputs.
              */
@@ -107,18 +114,25 @@
              * Creates a new row of input fields (text and number) and adds it to the table.
              */
             function addNewItemRow() {
+                const rowCount = entriesContainer.children.length;
+                const isDefaultItem = rowCount < defaultItems.length;
+
                 // Create a new table row element
                 const row = document.createElement('tr');
                 row.classList.add('border-b', 'border-gray-200', 'hover:bg-gray-100');
                 
+                // Get default values if available
+                const foodValue = isDefaultItem ? defaultItems[rowCount].food : '';
+                const kcalValue = isDefaultItem ? defaultItems[rowCount].kcal : '';
+                
                 // Create table cells for each input
                 const foodCell = document.createElement('td');
                 foodCell.classList.add('py-3', 'px-6', 'text-left', 'whitespace-nowrap');
-                foodCell.innerHTML = `<input type="text" class="input-field w-full" placeholder="Food name">`;
+                foodCell.innerHTML = `<input type="text" class="input-field w-full" placeholder="Food name" value="${foodValue}">`;
 
                 const kcalCell = document.createElement('td');
                 kcalCell.classList.add('py-3', 'px-6', 'text-center');
-                kcalCell.innerHTML = `<input type="number" class="input-field kcal-input w-full text-right" placeholder="0">`;
+                kcalCell.innerHTML = `<input type="number" class="input-field kcal-input w-full text-right" placeholder="0" value="${kcalValue}">`;
                 
                 const amountCell = document.createElement('td');
                 amountCell.classList.add('py-3', 'px-6', 'text-center');
@@ -154,8 +168,10 @@
             addItemBtn.addEventListener('click', addNewItemRow);
             calculateBtn.addEventListener('click', calculateTotal);
 
-            // Add an initial row on page load
-            addNewItemRow();
+            // Add the initial default rows on page load
+            for (let i = 0; i < defaultItems.length; i++) {
+                addNewItemRow();
+            }
             calculateTotal();
         });
     </script>
