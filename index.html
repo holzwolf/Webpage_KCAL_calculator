@@ -80,8 +80,10 @@
             const defaultItems = [
                 { food: 'Bread', kcal: 350 },
                 { food: 'Cheese', kcal: 150 },
+                { food: 'Tofu geräuchert', kcal: 100 },
                 { food: 'Noodles', kcal: 330 }
             ];
+            defaultItems.sort((a, b) => a.food.localeCompare(b.food));
 
             /**
              * Calculates the total sum based on the 'kcal' and 'amount' inputs.
