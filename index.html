@@ -21,25 +21,41 @@
         }
     </style>
 </head>
-<!-- Adjusted body padding for a tighter fit on mobile -->
 <body class="bg-gray-50 flex items-center justify-center min-h-screen p-2 sm:p-4">
 
-    <!-- Adjusted padding on the main container for a better mobile experience -->
     <div class="bg-white rounded-xl shadow-2xl p-4 sm:p-8 max-w-2xl w-full">
-        <h1 class="text-4xl font-extrabold text-gray-900 mb-2 text-center">Food Calorie Calculator</h1>
-        <p class="text-gray-500 mb-8 text-center">
-            Enter food items to calculate your total calorie intake.
-        </p>
+        
+        <header class="mb-8">
+            <h1 class="text-4xl font-extrabold text-gray-900 mb-2 text-center">Food Calorie Calculator</h1>
+            <p class="text-gray-500 mb-6 text-center">
+                Enter food items to calculate your total calorie intake.
+            </p>
+
+            <div class="text-center mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h2 class="text-xl font-bold text-gray-700">Total Calories</h2>
+                <p id="total-display" class="text-5xl font-extrabold text-blue-600 mt-1">0</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button id="add-item-btn" class="bg-gray-200 text-gray-800 font-semibold px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors duration-200 w-full sm:w-auto shadow-sm">
+                    Add New Item
+                </button>
+
+                <button id="calculate-btn" class="bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 w-full sm:w-auto shadow-md">
+                    Calculate Total
+                </button>
+            </div>
+
+            <div class="my-6 border-t border-gray-200"></div>
+        </header>
+
 
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse table-fixed">
                 <thead>
                     <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                        <!-- Updated to take up half the width -->
                         <th class="py-3 px-6 text-left w-1/2">Food Name</th>
-                        <!-- Updated to take up a quarter of the width -->
                         <th class="py-3 px-6 text-center w-1/4">kcal per 100g</th>
-                        <!-- Updated to take up a quarter of the width -->
                         <th class="py-3 px-6 text-center w-1/4"> Eaten (g)</th>
                         <th class="py-3 px-6 text-right">Actions</th>
                     </tr>
@@ -47,23 +63,6 @@
                 <tbody id="entries-container" class="text-gray-600 text-sm font-light">
                     </tbody>
             </table>
-        </div>
-
-        <div class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
-            <button id="add-item-btn" class="bg-gray-200 text-gray-800 font-semibold px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors duration-200 w-full sm:w-auto shadow-sm">
-                Add New Item
-            </button>
-
-            <button id="calculate-btn" class="bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 w-full sm:w-auto shadow-md">
-                Calculate Total
-            </button>
-        </div>
-        
-        <div class="my-8 border-t border-gray-200"></div>
-
-        <div class="text-center">
-            <h2 class="text-2xl font-bold text-gray-900">Total Calories</h2>
-            <p id="total-display" class="text-6xl font-extrabold text-blue-600 mt-2">0</p>
         </div>
     </div>
 
