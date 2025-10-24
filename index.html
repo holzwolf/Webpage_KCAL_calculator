@@ -67,121 +67,129 @@
         </div>
     </div>
 
-    <script>
-        // Wait for the entire page to load before running the script
-        document.addEventListener('DOMContentLoaded', () => {
-            // Get references to all the important HTML elements
-            const entriesContainer = document.getElementById('entries-container');
-            const addItemBtn = document.getElementById('add-item-btn');
-            const calculateBtn = document.getElementById('calculate-btn');
-            const totalDisplay = document.getElementById('total-display');
+<script>
+    // Wait for the entire page to load before running the script
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Get references to all the important HTML elements
+        const entriesContainer = document.getElementById('entries-container');
+        const addItemBtn = document.getElementById('add-item-btn');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const totalDisplay = document.getElementById('total-display');
 
-            // Array of default food items with their calorie values
-            const defaultItems = [
-                { food: 'Bread', kcal: 350 },
-                { food: 'Cheese', kcal: 150 },
-                { food: 'Tofu geräuchert Hofer', kcal: 100 },
-                { food: 'Pesto: Barilla Pomodori Secchi', kcal: 322 },
-                { food: 'Nudeln: Barilla Spaghetti #5', kcal: 359 }
-            ];
-            defaultItems.sort((a, b) => a.food.localeCompare(b.food));
-
-            /**
-             * Calculates the total sum based on the 'kcal' and 'amount' inputs.
-             */
-            function calculateTotal() {
-                const rows = entriesContainer.querySelectorAll('tr');
-                let totalCalories = 0;
-
-                rows.forEach(row => {
-                    // Find the kcal and amount inputs within this row
-                    const kcalInput = row.querySelector('.kcal-input');
-                    const amountInput = row.querySelector('.amount-input');
-
-                    // Make sure both inputs exist
-                    if (kcalInput && amountInput) {
-                        const kcalValue = parseFloat(kcalInput.value) || 0;
-                        const amountValue = parseFloat(amountInput.value) || 0;
-
-                        // Calculate the calories for this item: (kcal / 100g) * amount used
-                        const itemCalories = (kcalValue / 100) * amountValue;
-                        totalCalories += itemCalories;
-                    }
-                });
-
-                // Update the total display element with the calculated sum, rounded to a whole number
-                totalDisplay.textContent = Math.round(totalCalories).toLocaleString('en-US');
+        // --- NEW: FETCH DATA FROM EXTERNAL JSON FILE ---
+        let defaultItems = [];
+        try {
+            const response = await fetch('foods.json'); // Fetch the external file
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
+            defaultItems = await response.json(); // Parse the JSON data
+        } catch (error) {
+            console.error("Could not load food data:", error);
+            // Fallback to an empty array or hardcoded data if loading fails
+            defaultItems = []; 
+        }
 
-            /**
-             * Creates a new row of input fields (text and number) and adds it to the table.
-             */
-            function addNewItemRow() {
-                const rowCount = entriesContainer.children.length;
-                const isDefaultItem = rowCount < defaultItems.length;
+        // Sort the items once the data is loaded
+        defaultItems.sort((a, b) => a.food.localeCompare(b.food));
 
-                // Create a new table row element
-                const row = document.createElement('tr');
-                row.classList.add('border-b', 'border-gray-200', 'hover:bg-gray-100');
-                
-                // Get default values if available
-                const foodValue = isDefaultItem ? defaultItems[rowCount].food : '';
-                const kcalValue = isDefaultItem ? defaultItems[rowCount].kcal : '';
-                
-                // Create table cells for each input
-                const foodCell = document.createElement('td');
-                // Updated to take up half the width
-                foodCell.classList.add('py-3', 'px-6', 'text-left', 'w-1/2');
-                // === CHANGED TO TEXTAREA FOR MULTILINE SUPPORT ===
-                foodCell.innerHTML = `<textarea class="input-field w-full" placeholder="Food name">${foodValue}</textarea>`;
+        /**
+         * Calculates the total sum based on the 'kcal' and 'amount' inputs.
+         */
+        function calculateTotal() {
+            const rows = entriesContainer.querySelectorAll('tr');
+            let totalCalories = 0;
 
-                const kcalCell = document.createElement('td');
-                // Updated to take up a quarter of the width
-                kcalCell.classList.add('py-3', 'px-6', 'text-center', 'w-1/4');
-                kcalCell.innerHTML = `<input type="number" class="input-field kcal-input w-full text-right" placeholder="0" value="${kcalValue}">`;
-                
-                const amountCell = document.createElement('td');
-                // Updated to take up a quarter of the width
-                amountCell.classList.add('py-3', 'px-6', 'text-center', 'w-1/4');
-                amountCell.innerHTML = `<input type="number" class="input-field amount-input w-full text-right" placeholder="0">`;
-                
-                const actionsCell = document.createElement('td');
-                actionsCell.classList.add('py-3', 'px-6', 'text-center');
-                actionsCell.innerHTML = `<button class="remove-btn bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors duration-200">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 112 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" />
-                                            </svg>
-                                        </button>`;
-                
-                // Add event listeners for instant calculation and removal
-                foodCell.querySelector('textarea').addEventListener('input', calculateTotal);
-                kcalCell.querySelector('.kcal-input').addEventListener('input', calculateTotal);
-                amountCell.querySelector('.amount-input').addEventListener('input', calculateTotal);
-                actionsCell.querySelector('.remove-btn').addEventListener('click', () => {
-                    row.remove();
-                    calculateTotal(); // Recalculate after removing a row
-                });
+            rows.forEach(row => {
+                // Find the kcal and amount inputs within this row
+                const kcalInput = row.querySelector('.kcal-input');
+                const amountInput = row.querySelector('.amount-input');
 
-                // Append the cells to the row
-                row.appendChild(foodCell);
-                row.appendChild(kcalCell);
-                row.appendChild(amountCell);
-                row.appendChild(actionsCell);
+                // Make sure both inputs exist
+                if (kcalInput && amountInput) {
+                    const kcalValue = parseFloat(kcalInput.value) || 0;
+                    const amountValue = parseFloat(amountInput.value) || 0;
 
-                // Add the new row to the main container
-                entriesContainer.appendChild(row);
-            }
+                    // Calculate the calories for this item: (kcal / 100g) * amount used
+                    const itemCalories = (kcalValue / 100) * amountValue;
+                    totalCalories += itemCalories;
+                }
+            });
 
-            // Attach event listeners to the buttons
-            addItemBtn.addEventListener('click', addNewItemRow);
-            calculateBtn.addEventListener('click', calculateTotal);
+            // Update the total display element with the calculated sum, rounded to a whole number
+            totalDisplay.textContent = Math.round(totalCalories).toLocaleString('en-US');
+        }
 
-            // Add the initial default rows on page load
-            for (let i = 0; i < defaultItems.length; i++) {
-                addNewItemRow();
-            }
-            calculateTotal();
-        });
-    </script>
+        /**
+         * Creates a new row of input fields (text and number) and adds it to the table.
+         */
+        function addNewItemRow() {
+            const rowCount = entriesContainer.children.length;
+            const isDefaultItem = rowCount < defaultItems.length;
+
+            // Create a new table row element
+            const row = document.createElement('tr');
+            row.classList.add('border-b', 'border-gray-200', 'hover:bg-gray-100');
+            
+            // Get default values if available
+            const foodValue = isDefaultItem ? defaultItems[rowCount].food : '';
+            const kcalValue = isDefaultItem ? defaultItems[rowCount].kcal : '';
+            
+            // Create table cells for each input
+            const foodCell = document.createElement('td');
+            // Updated to take up half the width
+            foodCell.classList.add('py-3', 'px-6', 'text-left', 'w-1/2');
+            // === CHANGED TO TEXTAREA FOR MULTILINE SUPPORT ===
+            foodCell.innerHTML = `<textarea class="input-field w-full" placeholder="Food name">${foodValue}</textarea>`;
+
+            const kcalCell = document.createElement('td');
+            // Updated to take up a quarter of the width
+            kcalCell.classList.add('py-3', 'px-6', 'text-center', 'w-1/4');
+            kcalCell.innerHTML = `<input type="number" class="input-field kcal-input w-full text-right" placeholder="0" value="${kcalValue}">`;
+            
+            const amountCell = document.createElement('td');
+            // Updated to take up a quarter of the width
+            amountCell.classList.add('py-3', 'px-6', 'text-center', 'w-1/4');
+            amountCell.innerHTML = `<input type="number" class="input-field amount-input w-full text-right" placeholder="0">`;
+            
+            const actionsCell = document.createElement('td');
+            actionsCell.classList.add('py-3', 'px-6', 'text-center');
+            actionsCell.innerHTML = `<button class="remove-btn bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors duration-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 112 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" />
+                                        </svg>
+                                    </button>`;
+            
+            // Add event listeners for instant calculation and removal
+            foodCell.querySelector('textarea').addEventListener('input', calculateTotal);
+            kcalCell.querySelector('.kcal-input').addEventListener('input', calculateTotal);
+            amountCell.querySelector('.amount-input').addEventListener('input', calculateTotal);
+            actionsCell.querySelector('.remove-btn').addEventListener('click', () => {
+                row.remove();
+                calculateTotal(); // Recalculate after removing a row
+            });
+
+            // Append the cells to the row
+            row.appendChild(foodCell);
+            row.appendChild(kcalCell);
+            row.appendChild(amountCell);
+            row.appendChild(actionsCell);
+
+            // Add the new row to the main container
+            entriesContainer.appendChild(row);
+        }
+
+        // Attach event listeners to the buttons
+        addItemBtn.addEventListener('click', addNewItemRow);
+        calculateBtn.addEventListener('click', calculateTotal);
+
+        // Add the initial default rows on page load
+        for (let i = 0; i < defaultItems.length; i++) {
+            addNewItemRow();
+        }
+        calculateTotal();
+    });
+</script>
+
 </body>
 </html>
