@@ -33,14 +33,14 @@
     { "food": "zz_ueberschreiben", "kcal": 123 },
     { "food": "zz_ueberschreiben", "kcal": 123 },
     { "food": "zz_ueberschreiben", "kcal": 123 },
-    { "food": "zz_ueberschreiben", "kcal": 123 },
-    { "food": "zz_ueberschreiben", "kcal": 123 },
-    { "food": "zz_ueberschreiben", "kcal": 123 },
-    { "food": "zz_ueberschreiben", "kcal": 123 },
+    { "food": "KAEFERBOHNEN Hofer", "kcal": 117 },
+    { "food": "MAIS", "kcal": 77 },
+    { "food": "SAUCE: Taco Santa Maria Mild", "kcal": 34 },
+    { "food": "SUGO: Barilla Basilico", "kcal": 64 },
     { "food": "Bread", "kcal": 350 },
-    { "food": "Cheese", "kcal": 150 },
-    { "food": "Tofu geräuchert Hofer", "kcal": 100 },
-    { "food": "Pesto: Barilla Pomodori Secchi", "kcal": 322 },
-    { "food": "Nudeln: Barilla Spaghetti #5", "kcal": 359 },
-    { "food": "Pesto: Barilla Calabrese", "kcal": 337 }
+    { "food": "TORTELLINI Gemuese Hofer", "kcal": 287 },
+    { "food": "TOFU geräuchert Hofer", "kcal": 100 },
+    { "food": "PESTO: Barilla Pomodori Secchi", "kcal": 322 },
+    { "food": "NUDELN: Barilla Spaghetti #5", "kcal": 359 },
+    { "food": "PESTO: Barilla Calabrese", "kcal": 337 }
 ]
